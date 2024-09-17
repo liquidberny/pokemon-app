@@ -8,18 +8,26 @@
   </section>
   <section v-else class="flex flex-col justify-center items-center w-screen h-screen">
     <h1 class="m-5">Quien es este Pokémon?</h1>
-    <h3 class="capitalize">{{ gameStatus }}</h3>
+    <button
+      v-if="gameStatus !== GameStatus.Playing"
+      @click="getNextRound()"
+      class="bg-blue-100 text-white p-2 rounded-md hover:bg-blue-700 transition-all"
+    >
+      Jugar de nuevo
+    </button>
+
     <!-- Pokemon Picture -->
     <PokemonPicture
       :pokemon-id="randomPokemon.id"
       :show-pokemon="gameStatus !== GameStatus.Playing"
     />
     <!-- Pokemon Options -->
-    <PokemonOptions 
-    :options="options"
-    :block-selection="gameStatus !== GameStatus.Playing"
-    :correct-answer="randomPokemon.id"
-    @selected-option="checkAnswer"/>
+    <PokemonOptions
+      :options="options"
+      :block-selection="gameStatus !== GameStatus.Playing"
+      :correct-answer="randomPokemon.id"
+      @selected-option="checkAnswer"
+    />
   </section>
 </template>
 
@@ -29,7 +37,12 @@ import PokemonPicture from '../components/PokemonPicture.vue';
 import { usePokemonGame } from '../composables/usePokemonGame';
 import { GameStatus } from '../interfaces';
 
-const { gameStatus, isLoading, randomPokemon, pokemonOptions:options, checkAnswer } = usePokemonGame();
-
-
+const {
+  gameStatus,
+  isLoading,
+  randomPokemon,
+  pokemonOptions: options,
+  checkAnswer,
+  getNextRound,
+} = usePokemonGame();
 </script>
