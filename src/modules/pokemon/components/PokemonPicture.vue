@@ -1,20 +1,34 @@
 <template>
   <section>
-    <img
-      class="brightness-0 h-[200px]"
-      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/132.svg"
-      alt="Ditto"
-    />
+    <img v-if="!showPokemon" class="brightness-0 h-[200px]" :src="pokemonImage" alt="pkm image" />
+    <img v-else class="h-[200px] fade-in" :src="pokemonImage" alt="pkm image" />
   </section>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import { computed } from 'vue';
+
+interface Props {
+  pokemonId: number;
+  showPokemon?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  showPokemon: false,
+});
+
+const pokemonImage = computed(
+  () =>
+    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${props.pokemonId}.svg`,
+);
+
+</script>
 
 <style scoped>
 img {
   user-select: none;
   -moz-user-select: none;
-  -ms-user-select:none;
+  -ms-user-select: none;
   -webkit-user-drag: none;
   -webkit-user-select: none;
 }
