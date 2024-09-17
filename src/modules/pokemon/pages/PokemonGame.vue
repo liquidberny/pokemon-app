@@ -15,7 +15,11 @@
       :show-pokemon="gameStatus !== GameStatus.Playing"
     />
     <!-- Pokemon Options -->
-    <PokemonOptions :options="options" @selected-option="checkAnswer"/>
+    <PokemonOptions 
+    :options="options"
+    :block-selection="gameStatus !== GameStatus.Playing"
+    :correct-answer="randomPokemon.id"
+    @selected-option="checkAnswer"/>
   </section>
 </template>
 
@@ -27,8 +31,5 @@ import { GameStatus } from '../interfaces';
 
 const { gameStatus, isLoading, randomPokemon, pokemonOptions:options, checkAnswer } = usePokemonGame();
 
-const onSelectedOption = (value: number) => {
-    console.log({value});
-}
 
 </script>
