@@ -1,5 +1,6 @@
 import { usePokemonGame } from '@/modules/pokemon/composables/usePokemonGame';
 import MockAdapter from 'axios-mock-adapter';
+import confetti from 'canvas-confetti';
 import { withSetup } from '../../../utils/with-setup';
 import { GameStatus } from '@/modules/pokemon/interfaces';
 import { flushPromises } from '@vue/test-utils';
@@ -11,6 +12,10 @@ const mockPokemonApi = new MockAdapter(pokemonApi);
 mockPokemonApi.onGet('/?limit=151').reply(200, {
   results: pokemonListFake,
 });
+
+vi.mock('canvas-confetti', () => ({
+  default: vi.fn(),
+}));
 
 describe('usePokemonGame', () => {
   test('should initialize with the correct default values', async () => {
@@ -81,5 +86,13 @@ describe('usePokemonGame', () => {
     expect(gameStatus.value).toBe(GameStatus.Playing);
 
     checkAnswer(randomPokemon.value.id);
+
+    expect(confetti).toHaveBeenCalled();
+    expect(confetti).toHaveBeenCalledWith({
+      particleCount: 300,
+      spread: 150,
+      origin: { y: 0.6 },
+    });
+    expect(gameStatus.value).toBe(GameStatus.Won);
   });
 });
