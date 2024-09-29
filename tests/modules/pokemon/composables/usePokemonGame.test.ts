@@ -53,18 +53,33 @@ describe('usePokemonGame', () => {
     const [results] = withSetup(usePokemonGame);
     await flushPromises();
 
-
     //estimulo
-    const first = [...results.pokemonOptions.value].map(p  => p.name)
+    const first = [...results.pokemonOptions.value].map((p) => p.name);
 
     results.getNextRound(4);
-    const second = [...results.pokemonOptions.value]
-
+    const second = [...results.pokemonOptions.value];
 
     second.forEach((pokemon) => {
-      expect(first).not.toContain(pokemon.name)
-    })
+      expect(first).not.toContain(pokemon.name);
+    });
+  });
 
+  test('should correctly handle a incorrect answer', async () => {
+    const [results] = withSetup(usePokemonGame);
+    await flushPromises();
 
+    const { checkAnswer, gameStatus } = results;
+    expect(gameStatus.value).toBe(GameStatus.Playing);
+    checkAnswer(10000);
+    expect(gameStatus.value).toBe(GameStatus.Lost);
+  });
+  test('should correctly handle a correct answer', async () => {
+    const [results] = withSetup(usePokemonGame);
+    await flushPromises();
+
+    const { checkAnswer, gameStatus, randomPokemon } = results;
+    expect(gameStatus.value).toBe(GameStatus.Playing);
+
+    checkAnswer(randomPokemon.value.id);
   });
 });
