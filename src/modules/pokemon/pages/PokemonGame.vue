@@ -10,8 +10,9 @@
     <h1 class="m-5">Quien es este Pokémon?</h1>
     <button
       v-if="gameStatus !== GameStatus.Playing"
-      @click="getNextRound()"
+      @click="getNextRound(4)"
       class="bg-blue-100 text-white p-2 rounded-md hover:bg-blue-700 transition-all"
+      data-test-id="btn-new-game"
     >
       Jugar de nuevo
     </button>
